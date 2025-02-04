@@ -17,4 +17,4 @@ if __name__ == "__main__":
     port = os.getenv("WILDLENS_PREDICTION_API_PORT")
     if port is None:
         port = 5000
-    uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
+    uvicorn.run(app, host="127.0.0.1", port=port, reload=True)
