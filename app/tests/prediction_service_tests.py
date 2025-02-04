@@ -5,18 +5,18 @@ from app.prediction_service import prepare_input_tensor
 
 
 def test_check_image_for_footprint_throws_exception_when_image_is_invalid(
-        wildlens_prediction_api_service,
+        prediction_service,
         invalid_image_file
 ):
     with pytest.raises(Exception):
-        wildlens_prediction_api_service.check_image_for_footprint(invalid_image_file)
+        prediction_service.check_image_for_footprint(invalid_image_file)
 
 def test_classify_image_throws_exception_when_image_is_invalid(
-        wildlens_prediction_api_service,
+        prediction_service,
         invalid_image_file
 ):
     with pytest.raises(Exception):
-        wildlens_prediction_api_service.classify_image(invalid_image_file)
+        prediction_service.classify_image(invalid_image_file)
 
 def test_prepare_input_tensor_transforms_valid_image_to_a_vector_of_expected_shape(
         mocker,

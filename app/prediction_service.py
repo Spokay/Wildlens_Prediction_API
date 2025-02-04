@@ -5,6 +5,8 @@ from PIL import Image
 from fastapi import UploadFile
 from numpy import ndarray, dtype, generic
 
+from app.classifier_models import binary_classifier_model, multiclass_classifier_model
+
 
 def prepare_input_tensor(image_file: UploadFile) -> ndarray[Any, dtype[generic | Any]]:
     image = Image.open(image_file.file).convert("RGB")
@@ -19,16 +21,31 @@ class PredictionService:
         self.multiclass_model = multiclass_model
 
     def predict_binary(self, image_file: UploadFile) -> list[float]:
-        input_tensor = prepare_input_tensor(image_file)
 
-        prediction = self.binary_model.predict(input_tensor)
+        try:
+            input_tensor = prepare_input_tensor(image_file)
 
-        return prediction
+            prediction = self.binary_model.predict(input_tensor)
+
+            return prediction
+
+        except Exception as e:
+            raise Exception(f"Error when predicting with binary classifier {str(e)}")
 
 
     def predict_multiclass(self, image: UploadFile) -> list[float]:
-        input_tensor = prepare_input_tensor(image)
+        try:
+            input_tensor = prepare_input_tensor(image)
 
-        prediction = self.multiclass_model.predict(input_tensor)
+            prediction = self.multiclass_model.predict(input_tensor)
 
-        return prediction
+            return prediction
+
+        except Exception as e:
+            raise Exception(f"Error when predicting with multiclass classifier {str(e)}")
+
+
+prediction_service = PredictionService(
+    binary_model=binary_classifier_model,
+    multiclass_model=multiclass_classifier_model
+)
