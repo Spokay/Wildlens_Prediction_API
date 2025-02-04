@@ -9,6 +9,13 @@ from app.prediction_service import PredictionService
 
 
 @pytest.fixture
+def prediction_service():
+    yield PredictionService(
+        binary_model=Mock(),
+        multiclass_model=Mock()
+    )
+
+@pytest.fixture
 def valid_image_file():
     # Create an in-memory image
     img = Image.new("RGB", (100, 100), color="white")
@@ -22,11 +29,3 @@ def valid_image_file():
 def invalid_image_file():
     return UploadFile(filename="invalid_image.jpg", file=io.BytesIO("invalid_image".encode()))
 
-@pytest.fixture
-def prediction_service():
-    with patch('app.prediction_service.binary_classifier_model', new=Mock()), \
-            patch('app.prediction_service.multiclass_classifier_model', new=Mock()):
-        yield PredictionService(
-            binary_model=Mock(),
-            multiclass_model=Mock()
-        )
