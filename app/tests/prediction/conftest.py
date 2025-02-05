@@ -1,11 +1,11 @@
 import io
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 import pytest
 from PIL import Image
 from fastapi import UploadFile
 
-from app.prediction_service import PredictionService
+from app.services.prediction_service import PredictionService
 
 
 @pytest.fixture

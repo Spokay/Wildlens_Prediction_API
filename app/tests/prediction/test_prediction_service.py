@@ -1,7 +1,7 @@
 import numpy
 import pytest
 
-from app.prediction_service import prepare_input_tensor
+from app.services.prediction_service import prepare_input_tensor
 
 
 def test_check_image_for_footprint_throws_exception_when_image_is_invalid(
