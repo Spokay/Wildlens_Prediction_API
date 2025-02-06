@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import os
+from app.services.auth_service import AuthMiddleware
 
 from app.routes.prediction_routes import router
 
@@ -12,6 +13,8 @@ from fastapi import FastAPI
 app = FastAPI()
 
 app.include_router(router)
+
+app.add_middleware(AuthMiddleware)
 
 
 if __name__ == "__main__":
