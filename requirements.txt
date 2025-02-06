@@ -1,9 +1,10 @@
 fastapi~=0.115.7
-uvicorn~=0.34.0
+uvicorn
 python-dotenv~=1.0.1
-numpy~=2.0.2
-pillow~=11.1.0
-pytest~=8.3.4
-pytest-mock~=3.14.0
+python-multipart
+numpy<2.0.0
+pillow
+pytest
+pytest-mock
 tensorflow~=2.18.0
-keras~=3.8.0
+keras

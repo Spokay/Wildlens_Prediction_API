@@ -19,7 +19,7 @@ if gpus:
 
 
 # Model which predicts whether an image contains a footprint or not
-project_root = pathlib.Path(__file__).resolve().parent
+project_root = pathlib.Path(__file__).resolve().parent.parent
 
 binary_classifier_path = project_root / WILDLENS_FOOTPRINT_BINARY_CLASSIFIER_MODEL_PATH
 
