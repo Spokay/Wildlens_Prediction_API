@@ -6,6 +6,10 @@ meta {
 
 post {
   url: {{BASE_URL}}/predictions/binary
-  body: none
+  body: multipartForm
   auth: none
+}
+
+body:multipart-form {
+  image_file: @file(C:\Users\hbres\PycharmProjects\Wildlens_Prediction_API\cnn_models\non_footprint_image.jpg)
 }
