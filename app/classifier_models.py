@@ -1,3 +1,5 @@
+import pathlib
+
 import keras
 import tensorflow as tf
 
@@ -17,7 +19,13 @@ if gpus:
 
 
 # Model which predicts whether an image contains a footprint or not
-binary_classifier_model = keras.models.load_model(WILDLENS_FOOTPRINT_BINARY_CLASSIFIER_MODEL_PATH)
+project_root = pathlib.Path(__file__).resolve().parent
+
+binary_classifier_path = project_root / WILDLENS_FOOTPRINT_BINARY_CLASSIFIER_MODEL_PATH
+
+binary_classifier_model = keras.models.load_model(filepath=binary_classifier_path)
 
 # Model which classifies a footprint image into classes of species
+
+multiclass_classifier_path = project_root / WILDLENS_FOOTPRINT_MULTICLASS_CLASSIFIER_MODEL_PATH
 multiclass_classifier_model = keras.models.load_model(WILDLENS_FOOTPRINT_MULTICLASS_CLASSIFIER_MODEL_PATH)

@@ -1,12 +1,11 @@
 import os
-
 from dotenv import load_dotenv
-
 load_dotenv()
+
+from app.routes.prediction_routes import router
 
 import uvicorn
 from fastapi import FastAPI
-from prediction_routes import router
 
 app = FastAPI()
 
@@ -14,7 +13,7 @@ app.include_router(router)
 
 
 if __name__ == "__main__":
-    port = os.getenv("WILDLENS_PREDICTION_API_PORT")
-    if port is None:
-        port = 5000
-    uvicorn.run(app, host="127.0.0.1", port=port, reload=True)
+    port = int(os.getenv("WILDLENS_PREDICTION_API_PORT", 5001))
+    assert os.getenv("WILDLENS_FOOTPRINT_BINARY_CLASSIFIER_MODEL_PATH") is not None
+    assert os.getenv("WILDLENS_FOOTPRINT_MULTICLASS_CLASSIFIER_MODEL_PATH") is not None
+    uvicorn.run(app, host="127.0.0.1", port=int(port))
