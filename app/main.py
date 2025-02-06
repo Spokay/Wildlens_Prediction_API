@@ -1,5 +1,7 @@
 from dotenv import load_dotenv
+
 load_dotenv()
+
 import os
 
 from app.routes.prediction_routes import router

@@ -49,9 +49,13 @@ async def predict_multiclass(
         prediction_service: PredictionService = Depends(get_prediction_service)
 ) -> MulticlassClassifierPredictionResponse:
 
-    predictions = await prediction_service.predict_multiclass(image_file)
+    # predictions = await prediction_service.predict_multiclass(image_file)
 
-    return MulticlassClassifierPredictionResponse(predictions=predictions)
+    return MulticlassClassifierPredictionResponse(
+        # TODO : when the MultiClassClassifier is implemented, replace the following predictions with the actual predictions
+        predictions=[0.17042333, 0.27900936, 0.02549643, 0.03818705, 0.10345666,0.06296999, 0.27900936, 0.03107355, 0.04685892,
+                      0.08450808, 0.05701663]
+    )
 
 
 
