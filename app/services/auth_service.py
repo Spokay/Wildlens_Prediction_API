@@ -1,8 +1,11 @@
+import traceback
+
 from fastapi import HTTPException
 from starlette import status
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import JSONResponse
 
-from app.config import WILDLENS_PREDICTION_API_KEY
+from app.config import WILDLENS_PREDICTION_API_KEY, logger
 
 
 def extract_api_key(auth_header):
@@ -35,3 +38,23 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
         response = await call_next(request)
         return response
+
+
+class ExceptionHandlerLoggingMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        try:
+            response = await call_next(request)
+            return response
+        except HTTPException as http_exc:
+            logger.info(f"HTTP error: {http_exc.detail} (status: {http_exc.status_code})")
+            return JSONResponse(
+                status_code=http_exc.status_code,
+                content={"detail": http_exc.detail}
+            )
+        except Exception as e:
+            logger.error(f"Unhandled error: {e}")
+            logger.debug(traceback.format_exc())
+            return JSONResponse(
+                status_code=500,
+                content={"detail": "An unexpected error occurred."}
+            )
