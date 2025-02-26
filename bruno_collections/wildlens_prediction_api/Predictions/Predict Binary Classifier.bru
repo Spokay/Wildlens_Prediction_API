@@ -1,0 +1,19 @@
+meta {
+  name: Predict Binary Classifier
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/predictions/binary
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  Authorization: Key {{API_KEY}}
+}
+
+body:multipart-form {
+  image_file: @file(C:\Users\hbres\PycharmProjects\Wildlens_Prediction_API\cnn_models\Renard_07.jpg)
+}

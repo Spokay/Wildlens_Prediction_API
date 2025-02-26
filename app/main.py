@@ -1,20 +1,27 @@
-import os
-
 from dotenv import load_dotenv
 
 load_dotenv()
 
+import os
+from app.config import logger
+from app.services.auth_service import AuthMiddleware, ExceptionHandlerLoggingMiddleware
+
+from app.routes.prediction_routes import router
+
 import uvicorn
 from fastapi import FastAPI
-from prediction_routes import router
 
 app = FastAPI()
 
 app.include_router(router)
 
+# setting up logging middleware
+
+app.add_middleware(AuthMiddleware)
+app.add_middleware(ExceptionHandlerLoggingMiddleware)
 
 if __name__ == "__main__":
-    port = os.getenv("WILDLENS_PREDICTION_API_PORT")
-    if port is None:
-        port = 5000
-    uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
+    port = int(os.getenv("WILDLENS_PREDICTION_API_PORT", 5001))
+    assert os.getenv("WILDLENS_FOOTPRINT_BINARY_CLASSIFIER_MODEL_PATH") is not None
+    assert os.getenv("WILDLENS_FOOTPRINT_MULTICLASS_CLASSIFIER_MODEL_PATH") is not None
+    uvicorn.run(app, host="127.0.0.1", port=int(port))
