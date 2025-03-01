@@ -5,7 +5,7 @@ from starlette import status
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 
-from app.config import WILDLENS_PREDICTION_API_KEY, ignore_api_key_endponts, logger
+from app.config import WILDLENS_PREDICTION_API_KEY, IGNORED_API_KEY_MIDDLEWARE_PATHS, logger
 
 
 def extract_api_key(auth_header):
@@ -20,7 +20,7 @@ def extract_api_key(auth_header):
 
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
-        if  request.url.path.startswith(tuple(ignore_api_key_endponts)):
+        if  request.url.path.startswith(tuple(IGNORED_API_KEY_MIDDLEWARE_PATHS)):
             return await call_next(request)
         auth_header = request.headers.get("Authorization")
         if not auth_header:
