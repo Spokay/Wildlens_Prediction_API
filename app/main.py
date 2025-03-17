@@ -1,10 +1,11 @@
 from dotenv import load_dotenv
 
+from app.middlewares.auth_middleware import AuthMiddleware
+from app.middlewares.exception_logging_middleware import ExceptionLoggingMiddleware
+
 load_dotenv()
 
 import os
-from app.config import logger
-from app.services.auth_service import AuthMiddleware, ExceptionHandlerLoggingMiddleware
 
 from app.routes.prediction_routes import router
 
@@ -18,7 +19,7 @@ app.include_router(router)
 # setting up logging middleware
 
 app.add_middleware(AuthMiddleware)
-app.add_middleware(ExceptionHandlerLoggingMiddleware)
+app.add_middleware(ExceptionLoggingMiddleware)
 
 if __name__ == "__main__":
     port = int(os.getenv("WILDLENS_PREDICTION_API_PORT", 5001))
