@@ -14,5 +14,6 @@ WILDLENS_FOOTPRINT_BINARY_CLASSIFIER_MODEL_PATH = os.getenv("WILDLENS_FOOTPRINT_
 
 IGNORED_API_KEY_MIDDLEWARE_PATHS = [
     "/docs",
-    "/openapi.json"
+    "/openapi.json",
+    "/metrics"
 ]
