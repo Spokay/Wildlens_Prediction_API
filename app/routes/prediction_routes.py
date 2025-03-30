@@ -1,12 +1,19 @@
 from functools import lru_cache
 
-from fastapi import APIRouter, UploadFile, Depends
+from fastapi import APIRouter, UploadFile, Depends, WebSocket
 from starlette import status
-
+import base64
+from io import BytesIO
 from app.classifier_models import binary_classifier_model, multiclass_classifier_model
 from app.dto.prediction import BinaryClassifierPredictionResponse, MulticlassClassifierPredictionResponse
 from app.mappers.prediction_mapper import binary_predictions_to_response
 from app.services.prediction_service import PredictionService
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+VALID_TOKEN = os.getenv("WILDLENS_PREDICTION_API_KEY")
 
 router = APIRouter(
     prefix="/predictions",
@@ -36,6 +43,45 @@ async def predict_binary(
     prediction_response = await binary_predictions_to_response(predictions)
 
     return prediction_response
+
+
+@router.websocket("/ws")
+async def socket_binary(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        auth_header = websocket.headers.get("Authorization")
+        if not auth_header or auth_header != "Key " + VALID_TOKEN:
+            await websocket.send_json({
+                "error": "Invalid API Key"
+            })
+            await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+            return
+        
+        prediction_service = get_prediction_service()
+        while True:
+            file = await websocket.receive_json()
+            filename = file.get("filename")
+            data = file.get("data")
+            if filename and data:
+                image_data = base64.b64decode(data)
+                image_file = UploadFile(
+                    filename=filename,
+                    file=BytesIO(image_data)
+                )
+
+                predictions = await prediction_service.predict_binary(image_file)
+                await websocket.send_json({
+                    "predictions": predictions.tolist(),
+                })
+            else:
+                await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+
+    except Exception as e:
+        await websocket.close(code=1008)
+        return
+    
+    
+
 
 
 @router.post(

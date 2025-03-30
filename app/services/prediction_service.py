@@ -4,9 +4,12 @@ import numpy as np
 from PIL import Image
 from fastapi import UploadFile
 from numpy import ndarray, dtype, generic
+from io import BytesIO
 
 
 def prepare_input_tensor(image_file: UploadFile) -> ndarray[Any, dtype[generic | Any]]:
+    # If image is bytes convert to PIL image
+
     image = Image.open(image_file.file).convert("RGB")
 
     image_array = np.array(image)

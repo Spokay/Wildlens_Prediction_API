@@ -15,7 +15,7 @@ from app.routes.prediction_routes import router as prediction_router
 from app.routes.metrics_routes import router as metrics_router
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 
 @asynccontextmanager
 async def lifespan(app_object: FastAPI):
