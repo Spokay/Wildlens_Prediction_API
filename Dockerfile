@@ -1,21 +1,16 @@
-FROM python:3.12.0-slim
+FROM python:3.12.0-alpine
 
+# Set the working directory
 WORKDIR /app
-
-
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-RUN pip install fastapi[standard]
-
-
-COPY ./app /app/app
-
+# Copy the source code into the container
+COPY ./app /app
+# Copy the entrypoint script into the container
 COPY ./entrypoint.sh /app/entrypoint.sh
+# Copy the requirements file into the container
+COPY requirements.txt .
+# Install the dependencies
 
-VOLUME /app/prediction_models
-
-EXPOSE 5002
-
-ENV FALLBACK_PORT=5002
+RUN pip install -r requirements.txt
 
 ENTRYPOINT ["/app/entrypoint.sh"]
+
