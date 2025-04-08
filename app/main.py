@@ -43,7 +43,7 @@ app.add_middleware(ExceptionLoggingMiddleware)
 
 
 if __name__ == "__main__":
-    port = int(os.getenv("WILDLENS_PREDICTION_API_PORT", 5001))
+    port = int(os.getenv("WILDLENS_PREDICTION_API_PORT", 5002))
     assert os.getenv("WILDLENS_FOOTPRINT_BINARY_CLASSIFIER_MODEL_PATH") is not None
     assert os.getenv("WILDLENS_FOOTPRINT_MULTICLASS_CLASSIFIER_MODEL_PATH") is not None
     uvicorn.run(app, host="127.0.0.1", port=int(port))

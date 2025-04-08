@@ -1,6 +1,6 @@
 FROM python:3.12.0-slim
 
-WORKDIR /api
+WORKDIR /app
 
 
 COPY requirements.txt .
@@ -8,13 +8,14 @@ RUN pip install -r requirements.txt
 RUN pip install fastapi[standard]
 
 
-COPY app /api/app
+COPY ./app /app/app
 
-COPY cnn_models /api/cnn_models
+COPY ./entrypoint.sh /app/entrypoint.sh
 
+VOLUME /app/prediction_models
 
-ENV PYTHONPATH="/api"
+EXPOSE 5002
 
-EXPOSE 5001
+ENV FALLBACK_PORT=5002
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5001"]
+ENTRYPOINT ["/app/entrypoint.sh"]
