@@ -45,7 +45,7 @@ RUN ln -s /usr/local/bin/python3.12 /usr/local/bin/python && \
 WORKDIR /app
 
 # Copy your FastAPI, requirements and entrypoint
-COPY ./app /app
+COPY ./app /app/app
 COPY ./requirements.txt /app/requirements.txt
 COPY ./entrypoint.sh /app/entrypoint.sh
 
