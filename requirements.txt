@@ -6,7 +6,7 @@ numpy~=2.0.2
 pillow
 pytest
 pytest-mock
-tensorflow~=2.18.0
+tensorflow[with-cuda]~=2.18.0
 keras
 prometheus-client~=0.21.1
 pynvml~=12.0.0
