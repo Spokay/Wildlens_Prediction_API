@@ -2,7 +2,7 @@ import psutil
 from prometheus_client import Gauge
 from prometheus_fastapi_instrumentator import Instrumentator
 from pynvml import nvmlDeviceGetCount, nvmlDeviceGetHandleByIndex, nvmlDeviceGetUtilizationRates, \
-    nvmlDeviceGetMemoryInfo
+    nvmlDeviceGetMemoryInfo, nvmlInit
 
 CPU_USAGE = Gauge('process_cpu_usage', 'Current CPU usage in percent')
 GPU_USAGE = Gauge('process_gpu_usage', 'Current GPU usage in percent')
@@ -10,6 +10,7 @@ MEMORY_USAGE = Gauge('process_memory_usage_bytes', 'Current memory usage in byte
 
 
 def update_system_metrics():
+    nvmlInit()
     devices = nvmlDeviceGetCount()
 
     for i in range(devices):
