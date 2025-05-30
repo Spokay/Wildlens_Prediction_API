@@ -1,5 +1,8 @@
 fastapi~=0.115.7
 uvicorn
+pydantic==2.11.5
+pydantic-core==2.33.2
+pydantic-settings==2.9.1
 python-dotenv~=1.0.1
 python-multipart
 numpy~=2.0.2
@@ -9,5 +12,6 @@ pytest-mock
 tensorflow[with-cuda]~=2.18.0
 keras
 prometheus-client~=0.21.1
+prometheus-fastapi-instrumentator~=7.1.0
 pynvml~=12.0.0
 psutil~=7.0.0

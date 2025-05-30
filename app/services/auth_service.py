@@ -1,11 +1,5 @@
-import traceback
-
 from fastapi import HTTPException
 from starlette import status
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import JSONResponse
-
-from app.config import WILDLENS_PREDICTION_API_KEY, IGNORED_API_KEY_MIDDLEWARE_PATHS, logger
 
 
 def extract_api_key(auth_header):
