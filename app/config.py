@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     # Environment
     environment: str = Field(default="development", description="Runtime environment")
     debug: bool = Field(default=True, description="Debug mode")
-    app_port: int = Field(default=8000, description="Application port")
+    app_port: int = Field(default=5002, description="Application port")
 
     # Wildlens API Configuration
     wildlens_prediction_api_key: Optional[str] = Field(
@@ -91,6 +91,14 @@ class Settings(BaseSettings):
         if v and not pathlib.Path(v).exists():
             logger.warning(f"Binary classifier model path does not exist: {v}")
         return v
+
+    @field_validator('app_port', mode='before')
+    @classmethod
+    def validate_app_port(cls, v):
+        """Handle empty string or None values for app_port"""
+        if v == '' or v is None:
+            return 5002
+        return int(v)
 
     @field_validator('api_prefix')
     @classmethod
