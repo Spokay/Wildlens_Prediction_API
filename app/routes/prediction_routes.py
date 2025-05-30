@@ -5,6 +5,7 @@ from starlette import status
 import base64
 from io import BytesIO
 from app.classifier_models import binary_classifier_model, multiclass_classifier_model
+from app.config import get_settings
 from app.dto.prediction import BinaryClassifierPredictionResponse, MulticlassClassifierPredictionResponse
 from app.mappers.prediction_mapper import binary_predictions_to_response
 from app.services.prediction_service import PredictionService
@@ -13,7 +14,7 @@ import os
 
 load_dotenv()
 
-VALID_TOKEN = os.getenv("WILDLENS_PREDICTION_API_KEY")
+settings = get_settings()
 
 router = APIRouter(
     prefix="/predictions",
@@ -50,7 +51,7 @@ async def socket_binary(websocket: WebSocket):
     await websocket.accept()
     try:
         auth_header = websocket.headers.get("Authorization")
-        if not auth_header or auth_header != "Key " + VALID_TOKEN:
+        if not auth_header or auth_header != "Key " + settings.wildlens_prediction_api_key:
             await websocket.send_json({
                 "error": "Invalid API Key"
             })
@@ -71,7 +72,7 @@ async def socket_binary(websocket: WebSocket):
 
                 predictions = await prediction_service.predict_binary(image_file)
                 await websocket.send_json({
-                    "predictions": predictions.tolist(),
+                    "predictions": predictions,
                 })
             else:
                 await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
