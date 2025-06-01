@@ -92,6 +92,14 @@ class Settings(BaseSettings):
             logger.warning(f"Binary classifier model path does not exist: {v}")
         return v
 
+    @field_validator('app_port', mode='before')
+    @classmethod
+    def validate_app_port(cls, v):
+        """Handle empty string or None values for app_port"""
+        if v == '' or v is None:
+            return 5002
+        return int(v)
+
     @field_validator('api_prefix')
     @classmethod
     def validate_api_prefix(cls, v: str) -> str:
