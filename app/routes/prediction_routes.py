@@ -4,6 +4,7 @@ from fastapi import APIRouter, UploadFile, Depends, WebSocket
 from starlette import status
 import base64
 from io import BytesIO
+import numpy as np
 from app.classifier_models import binary_classifier_model, multiclass_classifier_model
 from app.config import get_settings
 from app.dto.prediction import BinaryClassifierPredictionResponse, MulticlassClassifierPredictionResponse
@@ -96,12 +97,13 @@ async def predict_multiclass(
         prediction_service: PredictionService = Depends(get_prediction_service)
 ) -> MulticlassClassifierPredictionResponse:
 
-    # predictions = await prediction_service.predict_multiclass(image_file)
+    num_classes = 13
+    random_values = np.random.random(num_classes)
+    normalized_predictions = (random_values / random_values.sum()).tolist()
 
     return MulticlassClassifierPredictionResponse(
         # TODO : when the MultiClassClassifier is implemented, replace the following predictions with the actual predictions
-        predictions=[0.17042333, 0.27900936, 0.02549643, 0.03818705, 0.10345666,0.06296999, 0.27900936, 0.03107355, 0.04685892,
-                      0.08450808, 0.05701663]
+        predictions=normalized_predictions
     )
 
 

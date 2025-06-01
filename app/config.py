@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     # Environment
     environment: str = Field(default="development", description="Runtime environment")
     debug: bool = Field(default=True, description="Debug mode")
-    app_port: int = Field(default=8000, description="Application port")
+    app_port: int = Field(default=5002, description="Application port")
 
     # Wildlens API Configuration
     wildlens_prediction_api_key: Optional[str] = Field(
