@@ -33,7 +33,7 @@ class PredictionService:
             raise Exception(f"Error when predicting with binary classifier {str(e)}")
 
 
-    async def predict_multiclass(self, image: UploadFile) -> list[float]:
+    async def predict_multiclass(self, image: UploadFile) -> list[list[float]]:
         try:
             input_tensor = prepare_input_tensor(image)
 
