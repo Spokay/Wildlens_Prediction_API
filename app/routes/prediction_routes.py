@@ -98,7 +98,7 @@ async def predict_multiclass(
 ) -> MulticlassClassifierPredictionResponse:
     predictions = await prediction_service.predict_multiclass(image_file)
 
-    prediction_response = await multiclass_predictions_to_response(predictions[0])
+    prediction_response = await multiclass_predictions_to_response(predictions)
 
     return prediction_response
 
