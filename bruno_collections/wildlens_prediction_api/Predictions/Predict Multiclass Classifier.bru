@@ -6,6 +6,14 @@ meta {
 
 post {
   url: {{BASE_URL}}/predictions/multiclass
-  body: none
+  body: multipartForm
   auth: none
+}
+
+headers {
+  Authorization: Key {{API_KEY}}
+}
+
+body:multipart-form {
+  image_file: @file(C:\Users\Spokay\PycharmProjects\Wildlens_Prediction_API\prediction_models\Ours_02.jpg)
 }

@@ -8,7 +8,7 @@ import numpy as np
 from app.classifier_models import binary_classifier_model, multiclass_classifier_model
 from app.config import get_settings
 from app.dto.prediction import BinaryClassifierPredictionResponse, MulticlassClassifierPredictionResponse
-from app.mappers.prediction_mapper import binary_predictions_to_response
+from app.mappers.prediction_mapper import binary_predictions_to_response, multiclass_predictions_to_response
 from app.services.prediction_service import PredictionService
 from dotenv import load_dotenv
 import os
@@ -96,15 +96,11 @@ async def predict_multiclass(
         image_file : UploadFile,
         prediction_service: PredictionService = Depends(get_prediction_service)
 ) -> MulticlassClassifierPredictionResponse:
+    predictions = await prediction_service.predict_multiclass(image_file)
 
-    num_classes = 13
-    random_values = np.random.random(num_classes)
-    normalized_predictions = (random_values / random_values.sum()).tolist()
+    prediction_response = await multiclass_predictions_to_response(predictions[0])
 
-    return MulticlassClassifierPredictionResponse(
-        # TODO : when the MultiClassClassifier is implemented, replace the following predictions with the actual predictions
-        predictions=normalized_predictions
-    )
+    return prediction_response
 
 
 
